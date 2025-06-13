@@ -1,0 +1,15 @@
+workflows:
+  ios-workflow:
+    name: TechnoCorner iOS
+    instance_type: mac_mini_m1
+    environment:
+      xcode: latest
+    scripts:
+      - keychain initialize
+      - app-store-connect fetch-signing-files com.votrenom.technocorner --type IOS_APP_STORE --create
+      - keychain add-certificates
+      - xcode-project use-profiles
+      - cd ios/App && xcode-project build-ipa --workspace App.xcworkspace --scheme App
+    publishing:
+      app_store_connect:
+        auth: integration
